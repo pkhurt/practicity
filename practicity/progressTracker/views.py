@@ -7,9 +7,11 @@ from .models import Exercise, PracticeSession
 # Create your views here.
 def index(request):
     latest_session_list = PracticeSession.objects.order_by('-practice_session_start')[:5]
+    exercise_list = Exercise.objects.all()
 
     context = {
         'latest_session_list': latest_session_list,
+        'exercise_list': exercise_list,
     }
 
     return render(request, 'progressTracker/index.html', context)
@@ -21,8 +23,8 @@ def session_detail(request, practice_session_id):
 
 
 def exercise_detail(request, exercise_id):
-    response = "You are looking at the details of the exercise %s "
-    return HttpResponse(response % exercise_id)
+    exercise = get_object_or_404(Exercise, pk=exercise_id)
+    return render(request, 'progressTracker/exercise_detail.html', {'exercise': exercise})
 
 
 def session_history(request):

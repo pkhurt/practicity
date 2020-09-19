@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>{{ exercise }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<table>
+    <tr>
+        <th> Exercise Name </th>
+        <th> Exercise added </th>
+        <th> Times exercise executed </th>
+    </tr>
+    <tr>
+        <td>{{ exercise.exercise_name }}</td>
+        <td>{{ exercise.exercise_add_date }}</td>
+        <td>{{ exercise.exercise_executed }}</td>
+    </tr>
+</table>
+</body>
+</html>
