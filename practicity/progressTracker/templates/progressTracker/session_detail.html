@@ -23,5 +23,15 @@
         <td>Time practiced: </td>
     </tr>
 </table>
+
+<hr>
+<h2>Exercises within this session:</h2>
+<ul>
+    {% for exercise in exercise_list %}
+        <li>
+            {{ exercise.exercise_name }} -- {{ exercise.exercise_executed }} time{{ exercise.exercise_executed|pluralize }} executed
+        </li>
+    {% endfor %}
+</ul>
 </body>
 </html>

@@ -21,5 +21,14 @@
         <td>{{ exercise.exercise_executed }}</td>
     </tr>
 </table>
+<hr>
+<p>Do you like to execute the exercise?</p>
+<form action="{% url 'progressTracker:exercise_execution' exercise.id %}" method="post">
+    {% csrf_token %}
+    <input type="radio" name="execution" id="execution1" value="Executed"><label>Execute</label><br>
+    <input type="radio" name="execution" id="execution2" value="Not Executed"><label>Don't Execute</label><br>
+    <input type="submit" value="Execute">
+</form>
+
 </body>
 </html>
