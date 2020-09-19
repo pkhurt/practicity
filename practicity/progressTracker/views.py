@@ -34,8 +34,12 @@ class ExerciseDetailView(generic.DetailView):
     template_name = 'progressTracker/exercise_detail.html'
 
 
-class SessionHistoryView(generic.DetailView):
+class SessionHistoryView(generic.ListView):
+    """
+
+    """
     model = PracticeSession
+    context_object_name = "practice_session_list"
     template_name = 'progressTracker/session_history.html'
 
 
