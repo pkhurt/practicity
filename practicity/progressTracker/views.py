@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.urls import reverse
+from django.views import generic
 
 from .models import Exercise, PracticeSession
 
@@ -27,14 +29,14 @@ def session_detail(request, practice_session_id):
     return render(request, 'progressTracker/session_detail.html', context)
 
 
-def exercise_detail(request, exercise_id):
-    exercise = get_object_or_404(Exercise, pk=exercise_id)
-    return render(request, 'progressTracker/exercise_detail.html', {'exercise': exercise})
+class ExerciseDetailView(generic.DetailView):
+    model = Exercise
+    template_name = 'progressTracker/exercise_detail.html'
 
 
-def session_history(request):
-    response = "You can see your session history here"
-    return HttpResponse(response)
+class SessionHistoryView(generic.DetailView):
+    model = PracticeSession
+    template_name = 'progressTracker/session_history.html'
 
 
 def exercise_execution(request, exercise_id):
