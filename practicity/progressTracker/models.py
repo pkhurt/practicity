@@ -32,6 +32,10 @@ class Exercise(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=7) <= self.exercise_add_date <= now
 
+    was_added_recently.admin_order_field = 'exercise_add_date'
+    was_added_recently.boolean = True
+    was_added_recently.short_description = 'Added recently?'
+
 #class PracticeSessionExercise(models.Model):
 #    """
 #    Solve n-n association between PracticeSession and Exercise
