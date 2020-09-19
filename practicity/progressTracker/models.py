@@ -4,9 +4,6 @@ from django.db import models
 from django.utils import timezone
 
 
-
-
-
 class PracticeSession(models.Model):
     """
     PracticeSessions creates the table for practice sessions. Meaning; A training workout
@@ -32,7 +29,8 @@ class Exercise(models.Model):
         return self.exercise_name
 
     def was_added_recently(self):
-        return self.exercise_add_date >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=7) <= self.exercise_add_date <= now
 
 #class PracticeSessionExercise(models.Model):
 #    """

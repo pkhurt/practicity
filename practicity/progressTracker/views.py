@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 from django.views import generic
 
 from .models import Exercise, PracticeSession
@@ -8,7 +9,8 @@ from .models import Exercise, PracticeSession
 
 # Create your views here.
 def index(request):
-    latest_session_list = PracticeSession.objects.order_by('-practice_session_start')[:5]
+    latest_session_list = PracticeSession.objects.filter(
+        practice_session_start__lte=timezone.now()).order_by('-practice_session_start')[:5]
     exercise_list = Exercise.objects.all()
 
     context = {
