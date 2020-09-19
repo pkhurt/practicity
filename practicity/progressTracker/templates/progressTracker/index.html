@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if latest_session_list %}
+    <ul>
+    {% for session in latest_session_list %}
+        <li><a href="session_detail/{{ session.id }}/">{{ session.practice_session_start }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No sessions are available.</p>
+{% endif %}
+
+</body>
+</html>

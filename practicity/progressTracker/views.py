@@ -1,10 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.template import loader
+
+from .models import Exercise, PracticeSession
 
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello World. This is the Progress Tracker App.")
+    latest_session_list = PracticeSession.objects.order_by('-practice_session_start')[:5]
+    template = loader.get_template('progressTracker/index.html')
+    context = {
+        'latest_session_list': latest_session_list,
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def session_detail(request, practice_session_id):
