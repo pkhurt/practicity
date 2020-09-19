@@ -1,6 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, Http404
 
 from .models import Exercise, PracticeSession
 
@@ -8,15 +7,17 @@ from .models import Exercise, PracticeSession
 # Create your views here.
 def index(request):
     latest_session_list = PracticeSession.objects.order_by('-practice_session_start')[:5]
-    template = loader.get_template('progressTracker/index.html')
+
     context = {
         'latest_session_list': latest_session_list,
     }
-    return HttpResponse(template.render(context, request))
+
+    return render(request, 'progressTracker/index.html', context)
 
 
 def session_detail(request, practice_session_id):
-    return HttpResponse("you are looking at the details of Practice Session id %s" % practice_session_id)
+    practice_session = get_object_or_404(PracticeSession, pk=practice_session_id)
+    return render(request, 'progressTracker/session_detail.html', {'practice_session': practice_session})
 
 
 def exercise_detail(request, exercise_id):

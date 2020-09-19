@@ -8,7 +8,7 @@
 {% if latest_session_list %}
     <ul>
     {% for session in latest_session_list %}
-        <li><a href="session_detail/{{ session.id }}/">{{ session.practice_session_start }}</a></li>
+        <li><a href="{% url 'progressTracker:session_detail' session.id %}">{{ session.practice_session_start }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
