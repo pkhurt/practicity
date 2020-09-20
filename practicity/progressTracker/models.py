@@ -55,6 +55,7 @@ class Execution(models.Model):
     execution_start = models.DateTimeField('DateTime practice started')
     execution_end = models.DateTimeField('DateTime practice ended')
     execution_rating = models.IntegerField(default=5)
+    execution_tempo = models.IntegerField()
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
 
     def __str__(self):

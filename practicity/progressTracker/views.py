@@ -52,6 +52,8 @@ class SessionHistoryView(generic.ListView):
 def exercise_execution(request, exercise_id):
     exercise = get_object_or_404(Exercise, pk=exercise_id)
 
+    return HttpResponse("Nice! You executed exercise %s " % exercise.exercise_name)
+
     # if request.POST['execution'] == 'Executed':
     #     exercise.exercise_executed += 1
     #     exercise.save()
@@ -59,9 +61,9 @@ def exercise_execution(request, exercise_id):
     #                         (exercise.exercise_name, str(exercise.exercise_times_executed)))
     # else:
     #     return HttpResponse("You did not execute %s " % exercise.exercise_name)
-    context = {
-        'exercise': exercise,
-    }
-    return render(request, 'progressTracker/exercise_execution.html', context)
+    # context = {
+    #     'exercise': exercise,
+    # }
+    # return render(request, 'progressTracker/exercise_execution.html', context)
 
 
