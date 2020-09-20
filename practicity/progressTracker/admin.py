@@ -10,13 +10,16 @@ class ExerciseInline(admin.StackedInline):
 
 
 class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ('exercise_name', 'exercise_executed', 'was_added_recently')
-
     fieldsets = [
         (None, {'fields': ['exercise_name']}),
         ('Time information', {'fields': ['exercise_add_date', 'exercise_executed']}),
         ('Related practice session', {'fields': ['practice_session']}),
     ]
+
+    # Admin change list
+    list_display = ('exercise_name', 'exercise_executed', 'was_added_recently')
+    list_filter = ['exercise_add_date']
+    search_fields = ['exercise_name']
 
 
 class PracticeSessionAdmin(admin.ModelAdmin):
