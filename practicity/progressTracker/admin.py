@@ -36,11 +36,20 @@ class ExerciseReferenceAdmin(admin.ModelAdmin):
     search_fields = ['exercise_reference_name', 'exercise_reference_author']
 
 
+class ExecutionAdmin(admin.ModelAdmin):
+    """
+    This class defines the look and feel of the model Execution in Admin
+    e.g. the list_display, filter definitions, search fields, groupings
+    """
+    list_display = ('date_of_execution_formatted', 'duration_executed', 'execution_rating', 'was_executed_recently')
+    list_filter = ['execution_start']
+
+
 # class ExecutionAdmin(admin.ModelAdmin):
 #     inlines = [ExerciseInline]
 
 # Register Models
 admin.site.register(Exercise, ExerciseAdmin)
-admin.site.register(Execution)
+admin.site.register(Execution, ExecutionAdmin)
 admin.site.register(ExerciseReference, ExerciseReferenceAdmin)
 

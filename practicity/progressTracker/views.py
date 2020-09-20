@@ -50,13 +50,20 @@ def session_detail(request, practice_session_id):
 
 def exercises_view(request):
     exercise_list = Exercise.objects.all()
-    # if this is a POST request we need to process the form data
+    # if this is a POST request we got feedback from the exercise execution form on the
+    # template
     if request.method == 'POST':
         # create a form instance and populate it with data from the request
         form = ExecutionForm(request.POST)
         # check if valid
         if form.is_valid():
-            return HttpResponseRedirect('/thanks/')
+            # Write exercise execution into DB execution
+            execution = Execution(execution_start=request.POST['start'],
+                                  execution_end=request.POST['end'],
+                                  execution_rating=request.POST['rating'],
+                                  execution_tempo=request.POST['tempo'],
+                                  exercise_id=request.POST["exercise"])
+            execution.save()
     # if a GET (or any other method) we'll create a blank form
     else:
         form = ExecutionForm()
