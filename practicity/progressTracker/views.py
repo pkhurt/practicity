@@ -8,31 +8,19 @@ from .models import Exercise, Execution
 from .forms import ExecutionForm
 
 
-# Form Post actions
-def get_exercise(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request
-        form = ExecutionForm(request.POST)
-        # check if valid
-        if form.is_valid():
-            return HttpResponseRedirect('/thanks/')
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = ExecutionForm()
-
-    return render(request, 'exercise_execution.html', {'form', form})
-
-
 # Create your views here.
 def index(request):
     latest_execution_list = Execution.objects.filter(
         execution_start__lte=timezone.now()).order_by('-execution_start')[:5]
     exercise_list = Exercise.objects.all()
 
+    # Get execution form
+    form = get_execute_form(request)
+
     context = {
-        'latest_session_list': latest_execution_list,
+        'latest_execution_list': latest_execution_list,
         'exercise_list': exercise_list,
+        'form': form,
     }
 
     return render(request, 'progressTracker/index.html', context)
@@ -50,23 +38,9 @@ def session_detail(request, practice_session_id):
 
 def exercises_view(request):
     exercise_list = Exercise.objects.all()
-    # if this is a POST request we got feedback from the exercise execution form on the
-    # template
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request
-        form = ExecutionForm(request.POST)
-        # check if valid
-        if form.is_valid():
-            # Write exercise execution into DB execution
-            execution = Execution(execution_start=request.POST['start'],
-                                  execution_end=request.POST['end'],
-                                  execution_rating=request.POST['rating'],
-                                  execution_tempo=request.POST['tempo'],
-                                  exercise_id=request.POST["exercise"])
-            execution.save()
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = ExecutionForm()
+
+    # get exercise execution form
+    form = get_execute_form(request)
 
     template_name = 'progressTracker/exercises.html'
 
@@ -76,7 +50,6 @@ def exercises_view(request):
     }
 
     return render(request, template_name, context)
-
 
 
 class ExerciseDetailView(generic.DetailView):
@@ -101,16 +74,23 @@ def exercise_execution(request, exercise_id):
 
     return HttpResponse("Nice! You executed exercise %s " % exercise.exercise_name)
 
-    # if request.POST['execution'] == 'Executed':
-    #     exercise.exercise_executed += 1
-    #     exercise.save()
-    #     return HttpResponse("You have successfully executed %s: Total now: %s " %
-    #                         (exercise.exercise_name, str(exercise.exercise_times_executed)))
-    # else:
-    #     return HttpResponse("You did not execute %s " % exercise.exercise_name)
-    # context = {
-    #     'exercise': exercise,
-    # }
-    # return render(request, 'progressTracker/exercise_execution.html', context)
 
+# Helper Functions
+def get_execute_form(request):
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = ExecutionForm(request.POST)
+        # check if valid
+        if form.is_valid():
+            # Write exercise execution into DB execution
+            execution = Execution(execution_start=request.POST['start'],
+                                  execution_end=request.POST['end'],
+                                  execution_rating=request.POST['rating'],
+                                  execution_tempo=request.POST['tempo'],
+                                  exercise_id=request.POST["exercise"])
+            execution.save()
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ExecutionForm()
 
+    return form

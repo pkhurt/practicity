@@ -12,27 +12,84 @@
     <li><a href="{% url 'progressTracker:exercises' %}">Exercises overview</a></li>
 </ul>
 <hr>
-<h1>Most recent Executions</h1>
+
+<!-- POP UP FORM -->
+<div class="form-popup" id="executionForm">
+  <form action="{% url 'progressTracker:index' %}" class="form-container" method="post">
+    {% csrf_token %}
+    <h1>Execution</h1>
+    {{ form }}
+
+    <button type="submit" class="btn">Done</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+  </form>
+</div>
+<!-- END POP UP FORM -->
+
+<h1>Most recent Exercise executions</h1>
 {% if latest_execution_list %}
-    <ul>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Exercise</th>
+            <th>Rating</th>
+        </tr>
     {% for execution in latest_execution_list %}
-        <li><a href="{% url 'progressTracker:session_detail' session.id %}">{{ execution.execution_start }}</a></li>
+        <tr>
+            <td>{{ execution.date_of_execution_formatted }}</td>
+            <td>{{ execution.duration_executed }}</td>
+            <td>{{ execution.exercise }}</td>
+            <td>{{ execution.execution_rating }}</td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 {% else %}
     <p>No executions are available.</p>
 {% endif %}
 
 <h1>Your Exercises</h1>
 {% if exercise_list %}
-    <ul>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Added on</th>
+            <th>Reference</th>
+            <th>Execute</th>
+        </tr>
     {% for exercise in exercise_list %}
-        <li><a href="{% url 'progressTracker:exercise_detail' exercise.id %}">{{ exercise }}</a></li>
+        <tr>
+            <td><a href="{% url 'progressTracker:exercise_detail' exercise.id %}">{{ exercise.id }}</a></td>
+            <td>{{ exercise.exercise_name }}</td>
+            <td>{{ exercise.exercise_added }}</td>
+            <td>{{ exercise.exercise_reference }}</td>
+            <td><button class="execute-button" onclick="openForm()" data-arg1="{{ exercise.id }}">Execute</button></td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 {% else %}
     <p>No exercises available.</p>
 {% endif %}
+
+<script>
+function openForm() {
+  document.getElementById("executionForm").style.display = "block";
+  let arg1 = event.target.getAttribute('data-arg1');
+
+  var date = new Date();
+  var currentDate = date.toISOString().slice(0,10);
+  var currentTime = date.getHours() + ':' + date.getMinutes();
+
+  // pre-fill form:
+  document.getElementById("id_exercise").value = arg1;
+  document.getElementById("id_start").value = currentDate + " " + currentTime;
+}
+
+function closeForm() {
+  document.getElementById("executionForm").style.display = "none";
+}
+</script>
 
 <h1>Statistics</h1>
 
