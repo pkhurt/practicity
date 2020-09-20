@@ -13,26 +13,16 @@
 </ul>
 <hr>
 <div class="form-popup" id="executionForm">
-  <form action="#" onsubmit="goToPage(this);" class="form-container">
+  <form action="{% url 'progressTracker:exercises' %}" class="form-container" method="post">
+    {% csrf_token %}
     <h1>Execution</h1>
-    <label for="exercise_id"><b>Exercise ID</b></label>
-    <input type="text" name="exercise_id" id="exercise_id" required disabled>
-
-    <label for="start"><b>Time started</b></label>
-    <input type="text" name="start" id="start" required disabled>
-
-    <label for="end"><b>Time ended</b></label>
-    <input type="text" name="end" id="end" placeholder="Will be filled when done." required disabled>
-
-    <label for="rating"><b>rating</b></label>
-    <input type="text" placeholder="Rate from 1 to 10" name="rating" required>
-
-    <label for="tempo"><b>Tempo</b></label>
-    <input type="text" placeholder="bpm" name="tempo" id="tempo" required>
+    {{ form }}
 
     <button type="submit" class="btn">Done</button>
     <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
   </form>
+
+
 </div>
 
 <h1>Your Exercises</h1>
@@ -69,17 +59,12 @@ function openForm() {
   var currentTime = date.getHours() + ':' + date.getMinutes();
 
   // pre-fill form:
-  document.getElementById("exercise_id").value = arg1;
-  document.getElementById("start").value = currentDate + " " + currentTime;
+  document.getElementById("id_exercise").value = arg1;
+  document.getElementById("id_start").value = currentDate + " " + currentTime;
 }
 
 function closeForm() {
   document.getElementById("executionForm").style.display = "none";
-}
-
-function goToPage() {
-    // Todo solve the next line generic!
-    window.open("http://127.0.0.1:8000/progressTracker/exercise_execution" + "/" + document.getElementById("exercise_id").value);
 }
 </script>
 

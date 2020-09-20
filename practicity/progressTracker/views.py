@@ -5,6 +5,24 @@ from django.views import generic
 
 from .models import Exercise, Execution
 
+from .forms import ExecutionForm
+
+
+# Form Post actions
+def get_exercise(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = ExecutionForm(request.POST)
+        # check if valid
+        if form.is_valid():
+            return HttpResponseRedirect('/thanks/')
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ExecutionForm()
+
+    return render(request, 'exercise_execution.html', {'form', form})
+
 
 # Create your views here.
 def index(request):
@@ -27,12 +45,31 @@ def session_detail(request, practice_session_id):
         'practice_session': practice_session,
         'exercise_list': exercise_list,
     }
-    return render(request, 'progressTracker/session_detail.html', context)
+    return render(request, 'progressTracker/exercises.html', context)
 
 
-class ExercisesView(generic.ListView):
-    model = Exercise
+def exercises_view(request):
+    exercise_list = Exercise.objects.all()
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request
+        form = ExecutionForm(request.POST)
+        # check if valid
+        if form.is_valid():
+            return HttpResponseRedirect('/thanks/')
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ExecutionForm()
+
     template_name = 'progressTracker/exercises.html'
+
+    context = {
+        'form': form,
+        'exercise_list': exercise_list,
+    }
+
+    return render(request, template_name, context)
+
 
 
 class ExerciseDetailView(generic.DetailView):
@@ -51,6 +88,9 @@ class SessionHistoryView(generic.ListView):
 
 def exercise_execution(request, exercise_id):
     exercise = get_object_or_404(Exercise, pk=exercise_id)
+
+    if request.POST['start']:
+        return HttpResponse("Nice! Time Submitted! %s " % request.POST['start'])
 
     return HttpResponse("Nice! You executed exercise %s " % exercise.exercise_name)
 

@@ -10,5 +10,5 @@ urlpatterns = [
     path('exercise_detail/<int:pk>/', views.ExerciseDetailView.as_view(), name='exercise_detail'),  # generic view
     path('session_history/', views.SessionHistoryView.as_view(), name='session_history'),  # generic view
     path('exercise_execution/<int:exercise_id>/', views.exercise_execution, name='exercise_execution'),
-    path('exercises', views.ExercisesView.as_view(), name='exercises'),
+    path('exercises', views.exercises_view, name='exercises'),
 ]
