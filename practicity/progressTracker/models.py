@@ -29,7 +29,6 @@ class Exercise(models.Model):
     """
     exercise_name = models.CharField(max_length=200, null=False)
     exercise_added = models.DateTimeField('Date exercise added')
-    exercise_times_executed = models.IntegerField(default=0)
     exercise_reference = models.ForeignKey(ExerciseReference, on_delete=models.CASCADE)
 
     def __str__(self):

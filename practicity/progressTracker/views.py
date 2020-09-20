@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
@@ -31,6 +30,11 @@ def session_detail(request, practice_session_id):
     return render(request, 'progressTracker/session_detail.html', context)
 
 
+class ExercisesView(generic.ListView):
+    model = Exercise
+    template_name = 'progressTracker/exercises.html'
+
+
 class ExerciseDetailView(generic.DetailView):
     model = Exercise
     template_name = 'progressTracker/exercise_detail.html'
@@ -48,12 +52,16 @@ class SessionHistoryView(generic.ListView):
 def exercise_execution(request, exercise_id):
     exercise = get_object_or_404(Exercise, pk=exercise_id)
 
-    if request.POST['execution'] == 'Executed':
-        exercise.exercise_executed += 1
-        exercise.save()
-        return HttpResponse("You have successfully executed %s: Total now: %s " %
-                            (exercise.exercise_name, str(exercise.exercise_times_executed)))
-    else:
-        return HttpResponse("You did not execute %s " % exercise.exercise_name)
+    # if request.POST['execution'] == 'Executed':
+    #     exercise.exercise_executed += 1
+    #     exercise.save()
+    #     return HttpResponse("You have successfully executed %s: Total now: %s " %
+    #                         (exercise.exercise_name, str(exercise.exercise_times_executed)))
+    # else:
+    #     return HttpResponse("You did not execute %s " % exercise.exercise_name)
+    context = {
+        'exercise': exercise,
+    }
+    return render(request, 'progressTracker/exercise_execution.html', context)
 
 

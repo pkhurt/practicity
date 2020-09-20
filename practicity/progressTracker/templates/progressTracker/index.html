@@ -7,6 +7,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'progressTracker/style.css' %}">
 </head>
 <body>
+<h1>placeholder navigation</h1>
+<ul>
+    <li><a href="{% url 'progressTracker:exercises' %}">Exercises overview</a></li>
+</ul>
+<hr>
 <h1>Most recent Executions</h1>
 {% if latest_execution_list %}
     <ul>
@@ -28,6 +33,8 @@
 {% else %}
     <p>No exercises available.</p>
 {% endif %}
+
+<h1>Statistics</h1>
 
 </body>
 </html>

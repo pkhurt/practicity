@@ -17,12 +17,12 @@ class ExerciseAdmin(admin.ModelAdmin):
 
     fieldsets = [
         (None, {'fields': ['exercise_name']}),
-        ('Time information', {'fields': ['exercise_added', 'exercise_times_executed']}),
+        ('Time information', {'fields': ['exercise_added']}),
         ('Reference', {'fields': ['exercise_reference']}),
     ]
 
     # Admin change list
-    list_display = ('exercise_name', 'exercise_times_executed', 'was_added_recently')
+    list_display = ('exercise_name', 'was_added_recently')
     list_filter = ['exercise_added']
     search_fields = ['exercise_name']
 
