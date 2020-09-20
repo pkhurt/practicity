@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='exercise',
-            name='exercise_add_date',
+            name='exercise_added',
             field=models.DateTimeField(verbose_name='Date exercise added'),
         ),
     ]

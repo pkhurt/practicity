@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('exercise_name', models.CharField(max_length=200)),
-                ('exercise_add_date', models.DateField(verbose_name='Date exercise added')),
+                ('exercise_added', models.DateField(verbose_name='Date exercise added')),
                 ('exercise_executed', models.IntegerField(default=0)),
             ],
         ),
