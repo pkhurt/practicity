@@ -15,23 +15,10 @@ class ExerciseReference(models.Model):
       exercise_reference_author: CharField(200)  ->  Author of the reference, if exist
     """
     exercise_reference_name = models.CharField(max_length=200, null=False)
-    exercise_reference_ISBN = models.CharField(max_length=500, null=True)
-    exercise_reference_author = models.CharField(max_length=200, null=True)
+    exercise_reference_ISBN = models.CharField(max_length=500, null=True, blank=True)
+    exercise_reference_author = models.CharField(max_length=200, null=True, blank=True)
 
 
-class PracticeSession(models.Model):
-    """
-    Todo: Description
-    PracticeSessions creates the table for practice sessions. Meaning; A training workout
-    """
-    practice_session_start = models.DateTimeField('DateTime practice started')
-    practice_session_end = models.DateTimeField('DateTime practice ended')
-
-    def __str__(self):
-        return "Practice session on: " + str(self.practice_session_start)
-
-
-# Create your models here.
 class Exercise(models.Model):
     """
     Todo: Description
@@ -40,7 +27,6 @@ class Exercise(models.Model):
     exercise_name = models.CharField(max_length=200, null=False)
     exercise_added = models.DateTimeField('Date exercise added')
     exercise_times_executed = models.IntegerField(default=0)
-    practice_session = models.ForeignKey(PracticeSession, on_delete=models.CASCADE)
     exercise_reference = models.ForeignKey(ExerciseReference, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -59,11 +45,25 @@ class Exercise(models.Model):
     was_added_recently.short_description = 'Added recently?'
 
 
+class Execution(models.Model):
+    """
+    Todo: Description
+    PracticeSessions creates the table for practice sessions. Meaning; A training workout
+    """
+    execution_start = models.DateTimeField('DateTime practice started')
+    execution_end = models.DateTimeField('DateTime practice ended')
+    execution_rating = models.IntegerField(default=5)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Execution of " + str(self.exercise) + " on: " + str(self.execution_start)
+
+
 class PracticeList(models.Model):
     """
     TODO: Description
     """
-    practice_list_name = models.CharField(200, null=False)
+    practice_list_name = models.CharField(max_length=200, null=False)
     practice_list_created = models.DateTimeField('Date the list has been created.')
 
 

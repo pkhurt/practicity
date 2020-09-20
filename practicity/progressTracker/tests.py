@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
 
-from .models import Exercise, PracticeSession
+from .models import Exercise, Execution
 
 
 # Create your tests here.
@@ -19,8 +19,8 @@ def create_practice_session(session_start, days):
     time_start = timezone.now() + datetime.timedelta(days=days)
     time_end = timezone.now() + datetime.timedelta(days=days, hours=1)
 
-    return PracticeSession.objects.create(practice_session_start=time_start,
-                                          practice_session_end=time_end)
+    return Execution.objects.create(practice_session_start=time_start,
+                                    practice_session_end=time_end)
 
 
 class IndexViewTests(TestCase):
