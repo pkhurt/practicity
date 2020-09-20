@@ -9,12 +9,12 @@ from .models import Exercise, Execution
 
 # Create your views here.
 def index(request):
-    latest_session_list = Execution.objects.filter(
-        practice_session_start__lte=timezone.now()).order_by('-practice_session_start')[:5]
+    latest_execution_list = Execution.objects.filter(
+        execution_start__lte=timezone.now()).order_by('-execution_start')[:5]
     exercise_list = Exercise.objects.all()
 
     context = {
-        'latest_session_list': latest_session_list,
+        'latest_session_list': latest_execution_list,
         'exercise_list': exercise_list,
     }
 

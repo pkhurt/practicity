@@ -7,15 +7,15 @@
     <link rel="stylesheet" type="text/css" href="{% static 'progressTracker/style.css' %}">
 </head>
 <body>
-<h1>Most recent Sessions</h1>
-{% if latest_session_list %}
+<h1>Most recent Executions</h1>
+{% if latest_execution_list %}
     <ul>
-    {% for session in latest_session_list %}
-        <li><a href="{% url 'progressTracker:session_detail' session.id %}">{{ session.practice_session_start }}</a></li>
+    {% for execution in latest_execution_list %}
+        <li><a href="{% url 'progressTracker:session_detail' session.id %}">{{ execution.execution_start }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No sessions are available.</p>
+    <p>No executions are available.</p>
 {% endif %}
 
 <h1>Your Exercises</h1>

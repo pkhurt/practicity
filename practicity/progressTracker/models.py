@@ -18,6 +18,9 @@ class ExerciseReference(models.Model):
     exercise_reference_ISBN = models.CharField(max_length=500, null=True, blank=True)
     exercise_reference_author = models.CharField(max_length=200, null=True, blank=True)
 
+    def __str__(self):
+        return self.exercise_reference_name + " (" + self.exercise_reference_author + ")"
+
 
 class Exercise(models.Model):
     """
