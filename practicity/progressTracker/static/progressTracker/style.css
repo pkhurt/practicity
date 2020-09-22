@@ -88,3 +88,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }
+
+/* Navigation Bar */
+.navbar .active {
+    font-weight: bold;
+}

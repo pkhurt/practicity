@@ -22,6 +22,8 @@
 
     <button type="submit" class="btn">Done</button>
     <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+    <button type="button" value="time" onclick="getTime()" name="timer" id="time"> Now </button>
+
   </form>
 </div>
 <!-- END POP UP FORM -->
@@ -89,9 +91,24 @@ function openForm() {
 function closeForm() {
   document.getElementById("executionForm").style.display = "none";
 }
+
+function getTime() {
+  var date = new Date()
+  var currentDate = date.toISOString().slice(0,10);
+  var currentTime = date.getHours() + ':' + date.getMinutes();
+
+  document.getElementById("id_end").value = currentDate + " " + currentTime;
+}
 </script>
 
-<h1>Statistics</h1>
 
+
+<h1>Statistics</h1>
+<div>
+    <p>Duration over time</p>
+    {% autoescape off %}
+        {{ plot_div }}
+    {% endautoescape %}
+</div>
 </body>
 </html>
