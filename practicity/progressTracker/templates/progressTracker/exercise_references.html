@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'progressTracker/style.css' %}">
+</head>
+<body>
+<h1>placeholder navigation</h1>
+<ul>
+    <li><a href="{% url 'progressTracker:exercises' %}">Exercises Overview</a></li>
+</ul>
+<hr>
+<div class="form-popup" id="executionForm">
+</div>
+
+<h1>Your Exercise References</h1>
+{% if exercise_reference_list %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Author</th>
+            <th>ISBN</th>
+        </tr>
+    {% for reference in exercise_reference_list %}
+        <tr>
+            <td>{{ reference.id }}</td>
+            <td>{{ reference.exercise_reference_name }}</td>
+            <td>{{ reference.exercise_reference_author }}</td>
+            <td>{{ reference.exercise_reference_ISBN }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No exercises available.</p>
+{% endif %}
+
+<script>
+function openForm() {
+  document.getElementById("executionForm").style.display = "block";
+  let arg1 = event.target.getAttribute('data-arg1');
+
+  var date = new Date();
+  var currentDate = date.toISOString().slice(0,10);
+  var currentTime = date.getHours() + ':' + date.getMinutes();
+
+  // pre-fill form:
+  document.getElementById("id_exercise").value = arg1;
+  document.getElementById("id_start").value = currentDate + " " + currentTime;
+}
+
+function closeForm() {
+  document.getElementById("executionForm").style.display = "none";
+}
+</script>
+
+</body>
+</html>

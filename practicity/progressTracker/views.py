@@ -6,7 +6,7 @@ from django.views import generic
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
 
-from .models import Exercise, Execution
+from .models import Exercise, Execution, ExerciseReference
 
 from .forms import ExecutionForm
 
@@ -69,16 +69,6 @@ def index(request):
     return render(request, 'progressTracker/' + template_name, context)
 
 
-def session_detail(request, practice_session_id):
-    practice_session = get_object_or_404(Execution, pk=practice_session_id)
-    exercise_list = Exercise.objects.filter(practice_session=practice_session_id)
-    context = {
-        'practice_session': practice_session,
-        'exercise_list': exercise_list,
-    }
-    return render(request, 'progressTracker/exercises.html', context)
-
-
 def exercises_view(request):
     exercise_list = Exercise.objects.all()
 
@@ -116,13 +106,13 @@ class ExerciseDetailView(generic.DetailView):
     template_name = 'progressTracker/exercise_detail.html'
 
 
-class SessionHistoryView(generic.ListView):
+class ExerciseReferenceView(generic.ListView):
     """
-
+    ExerciseReference shows a list of the Reference that are registered
     """
-    model = Execution
-    context_object_name = "practice_session_list"
-    template_name = 'progressTracker/session_history.html'
+    model = ExerciseReference
+    context_object_name = "exercise_reference_list"
+    template_name = 'progressTracker/exercise_references.html'
 
 
 def exercise_execution(request, exercise_id):
