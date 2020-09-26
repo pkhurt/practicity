@@ -5,6 +5,30 @@ from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
+class Instrument(models.Model):
+    """
+    Instrument creates the table for the registered instruments.
+
+    Fields:
+      instrument_type: CharField(200) NOT NULL  ->  Type of the instrument (Drums, Marimba,...)
+      instrument_brand: CharField(500)  ->  Brand of the instrument
+      instrument_description: CharField(200)  ->  Description of the instrument
+      instrument_date_bought: CharField(200)  ->  The date the instrument has been bought
+      instrument_price: CharField(200)  ->  Price of the instrument
+      instrument_store: CharField(200)  ->  Store where it has been bought
+    """
+    instrument_type = models.CharField(max_length=200, null=False)
+    instrument_brand = models.CharField(max_length=200, blank=True)
+    instrument_description = models.CharField(max_length=200, blank=True)
+    instrument_date_bought = models.DateTimeField(blank=True)
+    instrument_price = models.FloatField(default=0, blank=True)
+    instrument_store = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        return "Instrument: " + self.instrument_type \
+               + "( " + self.instrument_brand + ")"
+
+
 class Reference(models.Model):
     """
     Reference creates the table for references of exercise.
@@ -72,6 +96,7 @@ class Execution(models.Model):
                                            validators=[MaxValueValidator(10),MinValueValidator(1)])
     execution_tempo = models.IntegerField(validators=[MinValueValidator(1)])
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
 
     def __str__(self):
         return "Execution of " + str(self.exercise) + " on: " + str(self.execution_start)
@@ -114,9 +139,10 @@ class Execution(models.Model):
         :return: DateTime: Day of the year (1-365)
         """
         date = self.execution_start
-        return date.strftime("%-j")
+        return str(date.strftime("%j"))
 
     was_executed_recently.admin_order_field = 'exercise_added'
+    day_of_the_year_executed.admin_order_field = 'Day of the year'
     was_executed_recently.boolean = True
 
 

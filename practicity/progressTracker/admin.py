@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Exercise, Execution, Reference
+from .models import Exercise, Execution, Reference, Instrument
 
 
 # Inlines
@@ -25,7 +25,8 @@ class ExerciseAdmin(admin.ModelAdmin):
     ]
 
     # Admin change list
-    list_display = ('exercise_name', 'was_added_recently')
+    list_display = ('exercise_name',
+                    'was_added_recently')
     list_filter = ['exercise_added']
     search_fields = ['exercise_name']
 
@@ -44,15 +45,25 @@ class ExecutionAdmin(admin.ModelAdmin):
     This class defines the look and feel of the model Execution in Admin
     e.g. the list_display, filter definitions, search fields, groupings
     """
-    list_display = ('date_of_execution_formatted', 'duration_executed', 'execution_rating', 'was_executed_recently')
+    list_display = ('date_of_execution_formatted',
+                    'duration_executed',
+                    'execution_rating',
+                    'was_executed_recently',
+                    'day_of_the_year_executed')
     list_filter = ['execution_start']
 
 
-# class ExecutionAdmin(admin.ModelAdmin):
-#     inlines = [ExerciseInline]
+class InstrumentAdmin(admin.ModelAdmin):
+    """
+
+    """
+    list_display = ('instrument_type',
+                    'instrument_brand',
+                    'instrument_store')
 
 # Register Models
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Execution, ExecutionAdmin)
 admin.site.register(Reference, ReferenceAdmin)
+admin.site.register(Instrument, InstrumentAdmin)
 

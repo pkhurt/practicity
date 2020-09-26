@@ -52,9 +52,10 @@ def index(request):
                                   execution_end=request.POST['end'],
                                   execution_rating=request.POST['rating'],
                                   execution_tempo=request.POST['tempo'],
-                                  exercise_id=request.POST["exercise"])
+                                  exercise_id=request.POST["exercise"],
+                                  instrument_id=request.POST["instrument"])
             execution.save()
-            return HttpResponseRedirect('')
+            return HttpResponseRedirect('/progressTracker/')
     # if a GET (or any other method) we'll create a blank form
     else:
         form = ExecutionForm()
@@ -94,7 +95,7 @@ def exercises_view(request):
                                   execution_tempo=request.POST['tempo'],
                                   exercise_id=request.POST["exercise"])
             execution.save()
-            return HttpResponseRedirect('')
+            return HttpResponseRedirect('/exercises/')
     # if a GET (or any other method) we'll create a blank form
     else:
         form = ExecutionForm()

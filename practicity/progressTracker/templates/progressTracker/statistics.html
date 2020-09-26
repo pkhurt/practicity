@@ -47,11 +47,9 @@
     </nav>
 </head>
 <body>
-<h1>Statistics</h1>
-
 <div class="container">
 <h2>Statistics</h2>
-    <p>Duration over time</p>
+    <h3>Duration over time</h3>
     {% autoescape off %}
         {{ plot_execution_time }}
     {% endautoescape %}
@@ -59,6 +57,7 @@
 
 <!-- Grid contribution map -->
 <div class="container">
+    <h2>Practice Matrix</h2>
 <div class="graph">
     <ul class="months">
       <li>Jan</li>
@@ -89,11 +88,6 @@
   </div>
 </div>
 
-{% for execution in execution_list %}
-1
-  {{ execution.day_of_the_year_executed }}
-{% endfor %}
-
 <script>
     // Add squares
     const squares = document.querySelector('.squares');
@@ -102,10 +96,11 @@
       squares.insertAdjacentHTML('beforeend', `<li data-level="${level}" id=li_${i}></li>`);
     }
 
-
+    {% for execution in executions_list %}
+        document.getElementById('li_{{ execution.day_of_the_year_executed }}').style.background = "green";
+    {% endfor %}
 
 </script>
-
 
 </body>
 </html>
