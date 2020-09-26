@@ -11,3 +11,4 @@ class ExecutionForm(forms.Form):
     end = forms.CharField(label="End time", max_length=100)
     rating = forms.CharField(label="Rating", max_length=100)
     tempo = forms.CharField(label="Tempo", max_length=100)
+    timer = forms.CharField(label="Timer", disabled=True)

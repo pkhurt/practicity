@@ -43,7 +43,7 @@ class ExerciseModelTest(TestCase):
         was_added_recently() returns False for exercises whose date_added is in future
         """
         time = timezone.now() + datetime.timedelta(days=30)
-        future_exercise = Exercise(exercise_add_date=time)
+        future_exercise = Exercise(exercise_added=time)
         self.assertIs(future_exercise.was_added_recently(), False)
 
     def test_was_created_recently_with_old_exercise(self):
@@ -52,7 +52,7 @@ class ExerciseModelTest(TestCase):
         week
         """
         time = timezone.now() - datetime.timedelta(days=7, seconds=1)
-        old_exercise = Exercise(exercise_add_date=time)
+        old_exercise = Exercise(exercise_added=time)
         self.assertIs(old_exercise.was_added_recently(), False)
 
     def test_was_created_recently_with_recent_exercise(self):
@@ -61,5 +61,22 @@ class ExerciseModelTest(TestCase):
         last 7 days
         """
         time = timezone.now() - datetime.timedelta(days=1)
-        recent_exercise = Exercise(exercise_add_date=time)
+        recent_exercise = Exercise(exercise_added=time)
         self.assertIs(recent_exercise.was_added_recently(), True)
+
+    def test_was_executed_recently(self):
+        """
+
+        """
+        time = timezone.now() - datetime.timedelta(days=1)
+        current_exercise = Exercise(pk=1,
+                                    exercise_name="test_exercise",
+                                    exercise_added=timezone.now() - datetime.timedelta(days=7))
+        Execution.objects.create(execution_start=time,
+                                 execution_end=time + datetime.timedelta(hours=1),
+                                 execution_rating=2,
+                                 execution_tempo=50,
+                                 exercise=current_exercise)
+        self.assertIs(current_exercise.was_practiced_recently(), True)
+
+

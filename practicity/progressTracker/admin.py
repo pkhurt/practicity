@@ -3,17 +3,20 @@ from django.contrib import admin
 from .models import Exercise, Execution, Reference
 
 
-# Register your models here.
-# class ExerciseInline(admin.StackedInline):
-#     model = Exercise
-#     extra = 3
-#
-#
+# Inlines
+class ExerciseInline(admin.StackedInline):
+     model = Execution
+
+
+# Model register
 class ExerciseAdmin(admin.ModelAdmin):
     """
     This class defines the look and feel of the model Exercise in Admin
     e.g. the list_display, filter definitions, search fields, groupings
     """
+    inlines = [
+        ExerciseInline
+    ]
 
     fieldsets = [
         (None, {'fields': ['exercise_name']}),

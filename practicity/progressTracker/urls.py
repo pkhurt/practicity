@@ -10,4 +10,5 @@ urlpatterns = [
     path('exercise_execution/<int:exercise_id>/', views.exercise_execution, name='exercise_execution'),
     path('references/', views.ReferenceView.as_view(), name='references'),
     path('exercises', views.exercises_view, name='exercises'),
+    path('statistics/', views.statistics_view, name='statistics'),
 ]

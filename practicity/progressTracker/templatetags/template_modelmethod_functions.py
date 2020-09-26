@@ -23,3 +23,13 @@ def duration_executed(execution_object):
     :return:
     """
     return execution_object.duration_executed()
+
+
+@register.filter
+def day_of_the_year_executed(execution_object):
+    """
+
+    :param execution_object:
+    :return:
+    """
+    return execution_object.day_of_the_year_executed()

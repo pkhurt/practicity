@@ -41,9 +41,6 @@ def index(request):
                              opacity=0.8, marker_color='green')],
                     output_type='div')
 
-    for exercise in exercise_list:
-        t = 1
-
     # Get execution form
     if request.method == 'POST':
         # create a form instance and populate it with data from the request
@@ -144,3 +141,35 @@ def exercise_execution(request, exercise_id):
         return HttpResponse("Nice! Time Submitted! %s " % request.POST['start'])
 
     return HttpResponse("Nice! You executed exercise %s " % exercise.exercise_name)
+
+
+def statistics_view(request):
+    """
+    This view shall show all global statistics of the practices and executions
+    :param request:
+    :return:
+    """
+    exercises_list = Exercise.objects.all()
+    executions_list = Execution.objects.all()
+
+    template_name = "progressTracker/statistics.html"
+
+    # Executions plot data
+    x_plot_data = []
+    y_plot_data = []
+    for execution in executions_list:
+        x_plot_data.append(str(execution.execution_start))
+        y_plot_data.append(str(execution.duration_executed()))
+
+    plot_execution_time = plot([Scatter(x=x_plot_data, y=y_plot_data,
+                                        mode='lines', name='test',
+                                        opacity=0.8, marker_color='green')],
+                                        output_type='div')
+
+    context = {
+        "exercises_list": exercises_list,
+        "executions_list": executions_list,
+        "plot_execution_time": plot_execution_time,
+    }
+
+    return render(request, template_name, context)

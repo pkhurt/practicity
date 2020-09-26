@@ -29,6 +29,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'progressTracker:references' %}">References</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'progressTracker:statistics' %}">Statistics</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Dropdown link
@@ -59,6 +62,9 @@
   </form>
 </div>
 <!-- END POP UP FORM -->
+<div class="container">
+<span id="minutes"></span>:<span id="seconds"></span>
+    </div>
 <div class="container">
   <h2>Most recent Exercise executions</h2>
   {% if latest_execution_list %}
@@ -128,6 +134,30 @@ function openForm() {
   // pre-fill form:
   document.getElementById("id_exercise").value = arg1;
   document.getElementById("id_start").value = currentDate + " " + currentTime;
+
+  // Start Practice timer
+  var h1 = seconds = 0, minutes = 0, hours = 0
+
+  function add() {
+    seconds++;
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+
+    document.getElementById("id_timer").value = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+    timer();
+    }
+    function timer() {
+        t = setTimeout(add, 1000);
+    }
+
+    timer();
 }
 
 function closeForm() {
@@ -141,7 +171,10 @@ function getTime() {
 
   document.getElementById("id_end").value = currentDate + " " + currentTime;
 }
+
+
 </script>
+
 
 
 

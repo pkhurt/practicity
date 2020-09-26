@@ -2,11 +2,12 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Reference(models.Model):
     """
-    ExerciseReference creates the table for references of exercise.
+    Reference creates the table for references of exercise.
     References of exercise can be books, magazines, DVDs,... If no reference exists that is okay for an exercise
 
     Fields:
@@ -24,8 +25,12 @@ class Reference(models.Model):
 
 class Exercise(models.Model):
     """
-    Todo: Description
     Exercise creates the table for single exercises.
+
+    Fields:
+      exercise_name: CharField(200) NOT NULL -> Name of the exercise
+      exercise_added: DateTimeField() -> When the exercise has been added
+      exercise_reference: ForeignKey(Reference) -> what is the reference of the exercise
     """
     exercise_name = models.CharField(max_length=200, null=False)
     exercise_added = models.DateTimeField('Date exercise added')
@@ -36,7 +41,8 @@ class Exercise(models.Model):
 
     def was_added_recently(self):
         """
-        Todo: Description
+        Returns True if the exercise has been added within the past 7 days.
+
         :return: Boolean
         """
         now = timezone.now()
@@ -49,13 +55,22 @@ class Exercise(models.Model):
 
 class Execution(models.Model):
     """
-    Todo: Description
-    PracticeSessions creates the table for practice sessions. Meaning; A training workout
+    Execution holds all executions one has done. An execution is always consisting of a time start and end.
+
+    Fields:
+      execution_start: DateTimeField() -> Time started
+      execution_end: DateTimeField() -> Time stopped
+      execution_rating: int(default=5) -> How good was the performance.
+                                          Range between 1, 10
+      execution_tempo: int() -> Tempo executed (bpm)
+                                Range > 0
+      exercise: ForeignKey(Exercise) -> the exercise which has been executed / practiced
     """
     execution_start = models.DateTimeField('DateTime practice started')
     execution_end = models.DateTimeField('DateTime practice ended')
-    execution_rating = models.IntegerField(default=5)
-    execution_tempo = models.IntegerField()
+    execution_rating = models.IntegerField(default=5,
+                                           validators=[MaxValueValidator(10),MinValueValidator(1)])
+    execution_tempo = models.IntegerField(validators=[MinValueValidator(1)])
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -63,7 +78,8 @@ class Execution(models.Model):
 
     def was_executed_recently(self):
         """
-        returns true for exercise executions that have been done recently (past 7 days).
+        returns True for exercise executions that have been done recently (past 7 days).
+
         :return:
             Boolean: True -> executed within last 7 days
                      False -> Not
@@ -91,12 +107,22 @@ class Execution(models.Model):
                date.strftime("%B") + " " + \
                date.strftime("%Y")
 
+    def day_of_the_year_executed(self):
+        """
+        Returns the day (1-365) in the year, on which the execution has been done
+
+        :return: DateTime: Day of the year (1-365)
+        """
+        date = self.execution_start
+        return date.strftime("%-j")
+
     was_executed_recently.admin_order_field = 'exercise_added'
     was_executed_recently.boolean = True
 
 
 class PracticeList(models.Model):
     """
+    PracticeList
     TODO: Description
     """
     practice_list_name = models.CharField(max_length=200, null=False)
