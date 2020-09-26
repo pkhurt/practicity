@@ -59,15 +59,15 @@
   </form>
 </div>
 <!-- END POP UP FORM -->
-
-<h1>Most recent Exercise executions</h1>
-{% if latest_execution_list %}
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Duration</th>
-            <th>Exercise</th>
-            <th>Rating</th>
+<div class="container">
+  <h2>Most recent Exercise executions</h2>
+  {% if latest_execution_list %}
+      <table>
+          <tr>
+              <th>Date</th>
+              <th>Duration</th>
+              <th>Exercise</th>
+              <th>Rating</th>
         </tr>
     {% for execution in latest_execution_list %}
         <tr>
@@ -81,8 +81,9 @@
 {% else %}
     <p>No executions are available.</p>
 {% endif %}
-
-<h1>Your Exercises</h1>
+</div>
+<div class="container">
+<h2>Your Exercises</h2>
 {% if exercise_list %}
     <table>
         <tr>
@@ -105,6 +106,15 @@
 {% else %}
     <p>No exercises available.</p>
 {% endif %}
+</div>
+
+<div class="container">
+<h1>Statistics</h1>
+    <p>Duration over time</p>
+    {% autoescape off %}
+        {{ plot_div }}
+    {% endautoescape %}
+</div>
 
 <script>
 function openForm() {
@@ -135,12 +145,6 @@ function getTime() {
 
 
 
-<h1>Statistics</h1>
-<div>
-    <p>Duration over time</p>
-    {% autoescape off %}
-        {{ plot_div }}
-    {% endautoescape %}
-</div>
+
 </body>
 </html>

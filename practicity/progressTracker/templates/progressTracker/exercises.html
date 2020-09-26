@@ -22,7 +22,7 @@
     <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
   </form>
 </div>
-
+<div class="container">
 <h1>Your Exercises</h1>
 {% if exercise_list %}
     <table>
@@ -46,6 +46,7 @@
 {% else %}
     <p>No exercises available.</p>
 {% endif %}
+</div>
 
 <script>
 function openForm() {

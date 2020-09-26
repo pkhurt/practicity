@@ -70,6 +70,11 @@ def index(request):
 
 
 def exercises_view(request):
+    """
+    
+    :param request:
+    :return:
+    """
     exercise_list = Exercise.objects.all()
 
     # get exercise execution form
