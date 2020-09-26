@@ -4,22 +4,22 @@ from django.db import models
 from django.utils import timezone
 
 
-class ExerciseReference(models.Model):
+class Reference(models.Model):
     """
     ExerciseReference creates the table for references of exercise.
     References of exercise can be books, magazines, DVDs,... If no reference exists that is okay for an exercise
 
     Fields:
-      exercise_reference_name: CharField(200) NOT NULL  ->  Name of the reference
-      exercise_reference_ISBN: CharField(500)  ->  ISBN of the reference, if exist
-      exercise_reference_author: CharField(200)  ->  Author of the reference, if exist
+      reference_name: CharField(200) NOT NULL  ->  Name of the reference
+      reference_ISBN: CharField(500)  ->  ISBN of the reference, if exist
+      reference_author: CharField(200)  ->  Author of the reference, if exist
     """
-    exercise_reference_name = models.CharField(max_length=200, null=False)
-    exercise_reference_ISBN = models.CharField(max_length=500, null=True, blank=True)
-    exercise_reference_author = models.CharField(max_length=200, null=True, blank=True)
+    reference_name = models.CharField(max_length=200, null=False)
+    reference_ISBN = models.CharField(max_length=500, null=True, blank=True)
+    reference_author = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
-        return self.exercise_reference_name + " (" + self.exercise_reference_author + ")"
+        return self.reference_name + " (" + self.reference_author + ")"
 
 
 class Exercise(models.Model):
@@ -29,7 +29,7 @@ class Exercise(models.Model):
     """
     exercise_name = models.CharField(max_length=200, null=False)
     exercise_added = models.DateTimeField('Date exercise added')
-    exercise_reference = models.ForeignKey(ExerciseReference, on_delete=models.CASCADE)
+    exercise_reference = models.ForeignKey(Reference, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.exercise_name

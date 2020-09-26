@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Exercise, Execution, ExerciseReference
+from .models import Exercise, Execution, Reference
 
 
 # Register your models here.
@@ -27,13 +27,13 @@ class ExerciseAdmin(admin.ModelAdmin):
     search_fields = ['exercise_name']
 
 
-class ExerciseReferenceAdmin(admin.ModelAdmin):
+class ReferenceAdmin(admin.ModelAdmin):
     """
     This class defines the look and feel of the model ExerciseReference in Admin
     e.g. the list_display, filter definitions, search fields, groupings
     """
-    list_display = ('exercise_reference_name', 'exercise_reference_author', 'exercise_reference_ISBN')
-    search_fields = ['exercise_reference_name', 'exercise_reference_author']
+    list_display = ('reference_name', 'reference_author', 'reference_ISBN')
+    search_fields = ['reference_name', 'reference_author']
 
 
 class ExecutionAdmin(admin.ModelAdmin):
@@ -51,5 +51,5 @@ class ExecutionAdmin(admin.ModelAdmin):
 # Register Models
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Execution, ExecutionAdmin)
-admin.site.register(ExerciseReference, ExerciseReferenceAdmin)
+admin.site.register(Reference, ReferenceAdmin)
 

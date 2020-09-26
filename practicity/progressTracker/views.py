@@ -6,7 +6,7 @@ from django.views import generic
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
 
-from .models import Exercise, Execution, ExerciseReference
+from .models import Exercise, Execution, Reference
 
 from .forms import ExecutionForm
 
@@ -41,6 +41,9 @@ def index(request):
                              opacity=0.8, marker_color='green')],
                     output_type='div')
 
+    for exercise in exercise_list:
+        t = 1
+
     # Get execution form
     if request.method == 'POST':
         # create a form instance and populate it with data from the request
@@ -71,9 +74,12 @@ def index(request):
 
 def exercises_view(request):
     """
-    
-    :param request:
-    :return:
+    The exercises_view shows all registered exercises.
+    It also contains the availability to execute an exercise via a form module.
+
+    table: Exercises
+    template: exercises.html
+    :return: Renders to: /progressTracker/exercises/
     """
     exercise_list = Exercise.objects.all()
 
@@ -107,15 +113,26 @@ def exercises_view(request):
 
 
 class ExerciseDetailView(generic.DetailView):
+    """
+    The generic ExerciseDetailView shows the details of a specific exercise.
+
+    table: Exercises
+    template: exercise_detail.html
+    :return: Renders to: /progressTracker/exercises/<int: Exercise.ID>
+    """
     model = Exercise
     template_name = 'progressTracker/exercise_detail.html'
 
 
-class ExerciseReferenceView(generic.ListView):
+class ReferenceView(generic.ListView):
     """
-    ExerciseReference shows a list of the Reference that are registered
+    The generic ExerciseReferenceView shows the full list of registered references.
+
+    table: Exercises
+    template: exercise_detail.html
+    :return: Renders to: /progressTracker/exercises/<int: Exercise.ID>
     """
-    model = ExerciseReference
+    model = Reference
     context_object_name = "exercise_reference_list"
     template_name = 'progressTracker/exercise_references.html'
 
