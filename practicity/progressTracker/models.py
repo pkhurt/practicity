@@ -120,7 +120,7 @@ class Execution(models.Model):
     execution_end = models.DateTimeField('DateTime practice ended')
     execution_rating = models.IntegerField(default=5,
                                            validators=[MaxValueValidator(10),MinValueValidator(1)])
-    execution_tempo = models.IntegerField(validators=[MinValueValidator(1)])
+    execution_tempo = models.PositiveIntegerField()
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
 

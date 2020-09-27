@@ -30,8 +30,8 @@ class IndexViewTests(TestCase):
         """
         response = self.client.get(reverse('progressTracker:index'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "No sessions are available")
-        self.assertQuerysetEqual(response.context['latest_session_list'], [])
+        self.assertContains(response, "No executions are available")
+        self.assertQuerysetEqual(response.context['latest_execution_list'], [])
 
 
 class ExerciseModelTest(TestCase):
@@ -64,19 +64,73 @@ class ExerciseModelTest(TestCase):
         recent_exercise = Exercise(exercise_added=time)
         self.assertIs(recent_exercise.was_added_recently(), True)
 
-    def test_was_executed_recently(self):
-        """
 
+class ExecutionModelTest(TestCase):
+    """
+    Unittests for model Execution
+    """
+    def test_was_executed_recently_with_recent_date(self):
+        """
+        was_executed_recently() should return true with recent date
         """
         time = timezone.now() - datetime.timedelta(days=1)
         current_exercise = Exercise(pk=1,
                                     exercise_name="test_exercise",
                                     exercise_added=timezone.now() - datetime.timedelta(days=7))
-        Execution.objects.create(execution_start=time,
-                                 execution_end=time + datetime.timedelta(hours=1),
-                                 execution_rating=2,
-                                 execution_tempo=50,
-                                 exercise=current_exercise)
-        self.assertIs(current_exercise.was_practiced_recently(), True)
+        recent_execution = Execution(execution_start=time,
+                                     execution_end=time + datetime.timedelta(hours=1),
+                                     execution_rating=2,
+                                     execution_tempo=50,
+                                     exercise=current_exercise)
+        self.assertTrue(recent_execution.was_executed_recently())
+
+    def test_was_executed_recently_with_old_date(self):
+        """
+        was_executed_recently() should return False with date older than 7 days
+        """
+        time = timezone.now() - datetime.timedelta(days=7, hours=1)
+        current_exercise = Exercise(pk=1,
+                                    exercise_name="test_exercise",
+                                    exercise_added=timezone.now() - datetime.timedelta(days=7))
+        recent_execution = Execution(execution_start=time,
+                                     execution_end=time + datetime.timedelta(hours=1),
+                                     execution_rating=2,
+                                     execution_tempo=50,
+                                     exercise=current_exercise)
+        self.assertFalse(recent_execution.was_executed_recently())
+
+    def test_duration_executed_with_start_end_time_equal(self):
+        """
+        duration_executed should return 0 days, 0 minutes and 0 seconds if the start and
+        end time is the same value
+        """
+        time = timezone.now()
+        current_exercise = Exercise(pk=1,
+                                    exercise_name="test_exercise",
+                                    exercise_added=timezone.now() - datetime.timedelta(days=7))
+        recent_execution = Execution(execution_start=time,
+                                     execution_end=time,
+                                     execution_rating=2,
+                                     execution_tempo=50,
+                                     exercise=current_exercise)
+        self.assertEqual(recent_execution.duration_executed(), timezone.timedelta(days=0, hours=0, seconds=0))
+
+    def test_duration_executed_with_realistic_start_end_time(self):
+        """
+        duration_executed should return the correct value if the start and
+        end time is valid
+        """
+        time = timezone.now()
+        current_exercise = Exercise(pk=1,
+                                    exercise_name="test_exercise",
+                                    exercise_added=timezone.now() - datetime.timedelta(days=7))
+        recent_execution = Execution(execution_start=time,
+                                     execution_end=time + timezone.timedelta(hours=1),
+                                     execution_rating=2,
+                                     execution_tempo=50,
+                                     exercise=current_exercise)
+
+        self.assertEqual(recent_execution.duration_executed(), timezone.timedelta(hours=1))
+
 
 

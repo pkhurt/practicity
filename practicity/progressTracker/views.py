@@ -1,8 +1,11 @@
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.utils import timezone
 from django.views import generic
+from django.db import IntegrityError
+
 import datetime
+import pandas as pd
 
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
@@ -39,8 +42,10 @@ def index(request):
     # Plot data
     x_plot_data = []
     y_plot_data = []
+    duration = datetime.timedelta()
     for execution in execution_list:
-        x_plot_data.append(str(execution.execution_start))
+        x_plot_data.append(execution.execution_start.strftime('%Y-%m-%d %H'))
+        duration += execution.duration_executed()
         y_plot_data.append(str(execution.duration_executed()))
 
     plot_div = plot([Scatter(x=x_plot_data, y=y_plot_data,
@@ -97,13 +102,17 @@ def exercises_view(request):
         # check if valid
         if form.is_valid():
             # Write exercise execution into DB execution
-            execution = Execution(execution_start=request.POST['start'],
-                                  execution_end=request.POST['end'],
-                                  execution_rating=request.POST['rating'],
-                                  execution_tempo=request.POST['tempo'],
-                                  exercise_id=request.POST["exercise"])
-            execution.save()
-            return HttpResponseRedirect('/exercises/')
+            try:
+                execution = Execution(execution_start=request.POST['start'],
+                                      execution_end=request.POST['end'],
+                                      execution_rating=request.POST['rating'],
+                                      execution_tempo=request.POST['tempo'],
+                                      exercise_id=request.POST["exercise"])
+                execution.save()
+                return HttpResponseRedirect('/exercises/')
+            except IntegrityError as e:
+                return render('progressTracker/exercises.html', {"message": e})
+
     # if a GET (or any other method) we'll create a blank form
     else:
         form = ExecutionForm()
