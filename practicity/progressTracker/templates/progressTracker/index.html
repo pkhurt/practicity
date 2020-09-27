@@ -96,7 +96,6 @@ Total Time: {{ total_execution_time }}
 {% if exercise_list %}
     <table>
         <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Added on</th>
             <th>Reference</th>
@@ -104,7 +103,6 @@ Total Time: {{ total_execution_time }}
         </tr>
     {% for exercise in exercise_list %}
         <tr>
-            <td><a href="{% url 'progressTracker:exercise_detail' exercise.id %}">{{ exercise.id }}</a></td>
             <td>{{ exercise.exercise_name }}</td>
             <td>{{ exercise.exercise_added }}</td>
             <td>{{ exercise.exercise_reference }}</td>

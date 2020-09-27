@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'na6r60f8x*mj3mk*bll0$7&max-%9)5eo=gj8u_xjn-eec60k4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -119,3 +120,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SYSTEM_ENV = os.environ.get('SYSTEM_ENV', None)
+if SYSTEM_ENV == 'PRODUCTION' or SYSTEM_ENV == 'STAGING':
+    DEBUG = False
+    SECRET_KEY = os.environ.get('SECRET_KEY', None)
+    ...
+    CSRF_COOKIE_SECURE = True
+    ...
+    # Set Sentry and Error Debug
+    import sentry_sdk
+    ...
+elif SYSTEM_ENV == 'GITHUB_WORKFLOW':
+    DEBUG = True
+    SECRET_KEY = 'TESTING_KEY'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'github_actions',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
+elif SYSTEM_ENV == 'DEVELOPMENT':
+    DEBUG = True
