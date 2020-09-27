@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.utils import timezone
 from django.views import generic
+import datetime
 
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
@@ -30,6 +31,12 @@ def index(request):
     execution_list = Execution.objects.all()
     exercise_list = Exercise.objects.all()
 
+    # The total summed up time of execution
+    total_execution_time = datetime.timedelta(days=0, hours=0, minutes=0)
+    for execution in execution_list:
+        total_execution_time += execution.duration_executed()
+
+    # Plot data
     x_plot_data = []
     y_plot_data = []
     for execution in execution_list:
@@ -65,6 +72,7 @@ def index(request):
         'exercise_list': exercise_list,
         'form': form,
         'plot_div': plot_div,
+        'total_execution_time': total_execution_time,
     }
 
     return render(request, 'progressTracker/' + template_name, context)

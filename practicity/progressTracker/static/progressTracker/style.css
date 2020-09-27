@@ -241,3 +241,27 @@ body {
   background-color: #196127;
   list-style-type:none;
 }
+
+/* Side statistics (sidebar) */
+.sidestats {
+  width: 130px;
+  position: fixed;
+  z-index: 1;
+  top: 100px;
+  left: 10px;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.sidestats a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #2196F3;
+  display: block;
+}
+
+.sidestats a:hover {
+  color: #064579;
+}
