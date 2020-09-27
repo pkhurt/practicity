@@ -10,7 +10,7 @@ import plotly.graph_objs as go
 from plotly.offline import plot
 from plotly.graph_objs import Scatter, Bar
 
-from .models import Exercise, Execution, Reference, Instrument
+from .models import Exercise, Execution, Reference, Instrument, Category, ExerciseCategory
 
 from .forms import ExecutionForm
 
@@ -170,6 +170,8 @@ def statistics_view(request):
     exercises_list = Exercise.objects.all()
     executions_list = Execution.objects.all()
     instrument_list = Instrument.objects.all()
+    category_list = Category.objects.all()
+    exercise_category_list = ExerciseCategory.objects.all()
 
     template_name = "progressTracker/statistics.html"
 
@@ -250,6 +252,30 @@ def statistics_view(request):
                       paper_bgcolor='rgba( 255, 255 , 255, 0.4 )')
     plot_instrument_practiced = plot(fig, output_type='div')
 
+
+    # PLOT number of exercises in category
+    fig = go.Figure()
+    # add all the traces
+    for category in category_list:
+        x_plot_data = []
+        y_plot_data = []
+        this_exercises = ExerciseCategory.objects.filter(category=category)
+
+        exercises_in_category = 0
+        for exercise in this_exercises:
+            exercises_in_category += 1
+
+        x_plot_data.append(category.category_name)
+        y_plot_data.append(exercises_in_category)
+
+        fig.add_trace(go.Bar(x=x_plot_data, y=y_plot_data,
+                             name=category.category_name,
+                             opacity=0.8))
+
+    fig.update_layout(title='Number of exercises in category',
+                      paper_bgcolor='rgba( 255, 255 , 255, 0.4 )')
+    plot_exercises_in_category = plot(fig, output_type='div')
+
     context = {
         "exercises_list": exercises_list,
         "executions_list": executions_list,
@@ -257,6 +283,7 @@ def statistics_view(request):
         "plot_bpm": plot_bpm,
         "plot_rating": plot_rating,
         "plot_instrument_practiced": plot_instrument_practiced,
+        "plot_exercises_in_category": plot_exercises_in_category,
     }
 
     return render(request, template_name, context)

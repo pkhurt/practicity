@@ -64,7 +64,11 @@
       {{ plot_instrument_practiced }}
   {% endautoescape %}
   </div>
-  <div class="grid-item">4</div>
+  <div class="grid-item">
+  {% autoescape off %}
+      {{ plot_exercises_in_category }}
+  {% endautoescape %}
+  </div>
   <div class="grid-item">5</div>
   <div class="grid-item">6</div>
   <div class="grid-item">7</div>
