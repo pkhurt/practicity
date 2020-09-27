@@ -47,6 +47,30 @@
     </nav>
 </head>
 <body>
+
+<div class="grid-container">
+  <div class="grid-item">
+  {% autoescape off %}
+      {{ plot_bpm }}
+  {% endautoescape %}
+  </div>
+  <div class="grid-item">
+  {% autoescape off %}
+      {{ plot_rating }}
+  {% endautoescape %}
+  </div>
+  <div class="grid-item">
+  {% autoescape off %}
+      {{ plot_instrument_practiced }}
+  {% endautoescape %}
+  </div>
+  <div class="grid-item">4</div>
+  <div class="grid-item">5</div>
+  <div class="grid-item">6</div>
+  <div class="grid-item">7</div>
+  <div class="grid-item">8</div>
+  <div class="grid-item">9</div>
+</div>
 <div class="container">
 <h2>Statistics</h2>
     <h3>Duration over time</h3>

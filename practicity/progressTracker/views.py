@@ -5,12 +5,12 @@ from django.views import generic
 from django.db import IntegrityError
 
 import datetime
-import pandas as pd
 
+import plotly.graph_objs as go
 from plotly.offline import plot
-from plotly.graph_objs import Scatter
+from plotly.graph_objs import Scatter, Bar
 
-from .models import Exercise, Execution, Reference
+from .models import Exercise, Execution, Reference, Instrument
 
 from .forms import ExecutionForm
 
@@ -169,6 +169,7 @@ def statistics_view(request):
     """
     exercises_list = Exercise.objects.all()
     executions_list = Execution.objects.all()
+    instrument_list = Instrument.objects.all()
 
     template_name = "progressTracker/statistics.html"
 
@@ -182,12 +183,80 @@ def statistics_view(request):
     plot_execution_time = plot([Scatter(x=x_plot_data, y=y_plot_data,
                                         mode='lines', name='test',
                                         opacity=0.8, marker_color='green')],
-                                        output_type='div')
+                               output_type='div')
+
+    # PLOT: practice bpm history
+    fig = go.Figure()
+    # add all the traces
+    for exercise in exercises_list:
+        x_plot_data = []
+        y_plot_data = []
+        this_executions = Execution.objects.filter(exercise=exercise)
+
+        for execution in this_executions:
+            x_plot_data.append(str(execution.execution_start))
+            y_plot_data.append(int(execution.execution_tempo))
+
+        fig.add_trace(go.Scatter(x=x_plot_data, y=y_plot_data,
+                                 mode='lines+markers', name=exercise.exercise_name,
+                                 opacity=0.8))
+
+    fig.update_traces(marker_line_width=1, marker_size=10)
+    fig.update_layout(title='Practice BPM over time',
+                      paper_bgcolor='rgba( 255, 255 , 255, 0.4 )')
+    plot_bpm = plot(fig, output_type='div')
+
+    # PLOT: practice rating history
+    fig = go.Figure()
+    # add all the traces
+    for exercise in exercises_list:
+        x_plot_data = []
+        y_plot_data = []
+        this_executions = Execution.objects.filter(exercise=exercise)
+
+        for execution in this_executions:
+            x_plot_data.append(str(execution.execution_start))
+            y_plot_data.append(int(execution.execution_rating))
+
+        fig.add_trace(go.Scatter(x=x_plot_data, y=y_plot_data,
+                                 mode='lines+markers', name=exercise.exercise_name,
+                                 opacity=0.8))
+
+    fig.update_traces(marker_line_width=1, marker_size=10)
+    fig.update_layout(title='Practice Rating over time',
+                      paper_bgcolor='rgba( 255, 255 , 255, 0.4 )')
+    plot_rating = plot(fig, output_type='div')
+
+    # PLOT: practice rating history
+    fig = go.Figure()
+    # add all the traces
+    for instrument in instrument_list:
+        x_plot_data = []
+        y_plot_data = []
+        this_executions = Execution.objects.filter(instrument=instrument)
+
+        instrument_num_executions = 0
+        for execution in this_executions:
+            instrument_num_executions += 1
+
+        x_plot_data.append(instrument.instrument_brand)
+        y_plot_data.append(instrument_num_executions)
+
+        fig.add_trace(go.Bar(x=x_plot_data, y=y_plot_data,
+                             name=instrument.instrument_brand,
+                             opacity=0.8))
+
+    fig.update_layout(title='Instrument practiced',
+                      paper_bgcolor='rgba( 255, 255 , 255, 0.4 )')
+    plot_instrument_practiced = plot(fig, output_type='div')
 
     context = {
         "exercises_list": exercises_list,
         "executions_list": executions_list,
         "plot_execution_time": plot_execution_time,
+        "plot_bpm": plot_bpm,
+        "plot_rating": plot_rating,
+        "plot_instrument_practiced": plot_instrument_practiced,
     }
 
     return render(request, template_name, context)
