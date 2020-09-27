@@ -71,12 +71,14 @@ class Exercise(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=7) <= self.exercise_added <= now
 
+
+
     was_added_recently.admin_order_field = 'exercise_added'
     was_added_recently.boolean = True
     was_added_recently.short_description = 'Added recently?'
 
 
-class ExerciseCategory(models.Model):
+class Category(models.Model):
     """
     ExerciseCategory holds all exercise categories one has.
     For example a category can be for drums;
@@ -84,10 +86,20 @@ class ExerciseCategory(models.Model):
 
     Fields:
       category_name: CharField(200)
-      exercise: ForeignKey(Exercise)
     """
     category_name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.category_name
+
+
+class ExerciseCategory(models.Model):
+    """
+    JOINING TABLE
+    resolves many-to-many relation between; Category & Exercise
+    """
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class Execution(models.Model):

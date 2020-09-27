@@ -1,11 +1,16 @@
 from django.contrib import admin
 
-from .models import Exercise, Execution, Reference, Instrument
+from .models import Exercise, Execution, Reference, \
+    Instrument, ExerciseCategory, Category
 
 
 # Inlines
-class ExerciseInline(admin.StackedInline):
-     model = Execution
+class CategoryInline(admin.TabularInline):
+    """
+    Inline subject: Category
+    Inline object: ExerciseAdmin
+    """
+    model = ExerciseCategory
 
 
 # Model register
@@ -16,7 +21,7 @@ class ExerciseAdmin(admin.ModelAdmin):
     Model: Exercise
     """
     inlines = [
-        ExerciseInline
+        CategoryInline
     ]
 
     fieldsets = [
@@ -27,6 +32,7 @@ class ExerciseAdmin(admin.ModelAdmin):
 
     # Admin change list
     list_display = ('exercise_name',
+                    'exercise_reference',
                     'was_added_recently')
     list_filter = ['exercise_added']
     search_fields = ['exercise_name']
@@ -67,4 +73,5 @@ admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Execution, ExecutionAdmin)
 admin.site.register(Reference, ReferenceAdmin)
 admin.site.register(Instrument, InstrumentAdmin)
+admin.site.register(Category)
 
