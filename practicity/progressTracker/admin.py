@@ -9,10 +9,11 @@ class ExerciseInline(admin.StackedInline):
 
 
 # Model register
+# The models define the look and feel of the models in Admin
+# e.g. the list_display, filter definitions, search fields, groupings
 class ExerciseAdmin(admin.ModelAdmin):
     """
-    This class defines the look and feel of the model Exercise in Admin
-    e.g. the list_display, filter definitions, search fields, groupings
+    Model: Exercise
     """
     inlines = [
         ExerciseInline
@@ -33,8 +34,7 @@ class ExerciseAdmin(admin.ModelAdmin):
 
 class ReferenceAdmin(admin.ModelAdmin):
     """
-    This class defines the look and feel of the model ExerciseReference in Admin
-    e.g. the list_display, filter definitions, search fields, groupings
+    Model: Reference
     """
     list_display = ('reference_name', 'reference_author', 'reference_ISBN')
     search_fields = ['reference_name', 'reference_author']
@@ -42,24 +42,25 @@ class ReferenceAdmin(admin.ModelAdmin):
 
 class ExecutionAdmin(admin.ModelAdmin):
     """
-    This class defines the look and feel of the model Execution in Admin
-    e.g. the list_display, filter definitions, search fields, groupings
+    Model: Execution
     """
     list_display = ('date_of_execution_formatted',
                     'duration_executed',
                     'execution_rating',
                     'was_executed_recently',
-                    'day_of_the_year_executed')
+                    'instrument')
     list_filter = ['execution_start']
+    search_fields = ['instrument']
 
 
 class InstrumentAdmin(admin.ModelAdmin):
     """
-
+    Model: Instrument
     """
     list_display = ('instrument_type',
                     'instrument_brand',
                     'instrument_store')
+
 
 # Register Models
 admin.site.register(Exercise, ExerciseAdmin)

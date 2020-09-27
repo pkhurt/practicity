@@ -25,8 +25,7 @@ class Instrument(models.Model):
     instrument_store = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return "Instrument: " + self.instrument_type \
-               + "( " + self.instrument_brand + ")"
+        return self.instrument_type + "( " + self.instrument_brand + ")"
 
 
 class Reference(models.Model):
@@ -77,6 +76,20 @@ class Exercise(models.Model):
     was_added_recently.short_description = 'Added recently?'
 
 
+class ExerciseCategory(models.Model):
+    """
+    ExerciseCategory holds all exercise categories one has.
+    For example a category can be for drums;
+        "Hand Technique", "Beat", "Fill", "independence", "musice piece"
+
+    Fields:
+      category_name: CharField(200)
+      exercise: ForeignKey(Exercise)
+    """
+    category_name = models.CharField(max_length=200)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+
+
 class Execution(models.Model):
     """
     Execution holds all executions one has done. An execution is always consisting of a time start and end.
@@ -89,6 +102,7 @@ class Execution(models.Model):
       execution_tempo: int() -> Tempo executed (bpm)
                                 Range > 0
       exercise: ForeignKey(Exercise) -> the exercise which has been executed / practiced
+      instrument: ForeignKey(Instrument) -> on which instrument has been exercised
     """
     execution_start = models.DateTimeField('DateTime practice started')
     execution_end = models.DateTimeField('DateTime practice ended')
@@ -142,7 +156,6 @@ class Execution(models.Model):
         return str(date.strftime("%j"))
 
     was_executed_recently.admin_order_field = 'exercise_added'
-    day_of_the_year_executed.admin_order_field = 'Day of the year'
     was_executed_recently.boolean = True
 
 
