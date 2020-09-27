@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: 'refs/heads/develop'
+          ref: 'refs/heads/*'
       - name: Set up Python 3.8.5
         uses: actions/setup-python@v2
         with:
