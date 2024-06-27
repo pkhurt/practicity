@@ -24,4 +24,6 @@ jobs:
     - name: Run tests
       run: |
         source venv/bin/activate
-        python manage.py test practicity
+        ls -ltr
+        python ../manage.py test practicity
+    - run: ls -ltr
