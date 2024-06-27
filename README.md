@@ -24,12 +24,22 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 ``` 
 
-## Run the Webserver
+## Create the django database
+First, check if changes have happened to the database. (if this is a fresh set up this should not be the case)
+```
+python3 manage.py makemigrations
+``` 
+And then update the databse / create it if it does not exist
+```
+python3 manage.py migrate
+```
+
+# Run the Webserver
 ```
 python3 manage.py runserver
 ```
 
-## Run the Tests
+# Run the Tests
 ```
 python3 manage.py test
 ```
