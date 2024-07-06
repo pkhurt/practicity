@@ -46,3 +46,21 @@ python3 manage.py test
 
 ## Additional tools
 In VSCode one can load the plugin to investigate the database: https://github.com/cweijan/vscode-database-client 
+
+# The directories
+```
+├── LICENSE
+├── README.md
+├── db_diagram.drawio
+├── practicity
+│   ├── db.sqlite3
+│   ├── manage.py
+│   ├── practicity
+│   ├── progressTracker
+│   └── templates
+└── requirements.txt
+```
+* `manage.py` is the command-line utility for the Django server (one can start the server etc...)
+* `practicity/settings.py` contains all configurations for the Django project
+* `practicity/urls.py` contains all the urls that are set up by the Django server
+* `practicity/progressTracker` contains the App for the websever in which musicians can track their practice progress. The heart of the functionality.
