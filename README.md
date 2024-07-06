@@ -1,6 +1,6 @@
-<div style="text-align:center;">
+<p align="center" widht="100%">
 <img src="./docu/practicity_logo.PNG" alt="logo image" style="width:30%;height:30%;">
-</div>
+</p>
 <hr>
 
 # Practicity
