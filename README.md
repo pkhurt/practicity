@@ -71,6 +71,6 @@ In VSCode one can load the plugin to investigate the database: https://github.co
 * `practicity/progressTracker` contains the App for the websever in which musicians can track their practice progress. The heart of the functionality.
 
 <hr>
-<div style="text-align:center;">
+<p align="center">
 <img src="./docu/practicity_logo.PNG" alt="logo image" style="width:30%;height:30%;">
-</div>
+</p>
