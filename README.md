@@ -39,6 +39,11 @@ And then update the databse / create it if it does not exist
 python3 manage.py migrate
 ```
 
+If one wants to see the SQL commands that are created from the `models.py`
+```
+python3 manage.py sqlmigrate progressTracker 0001
+```
+
 # Run the Webserver
 ```
 python3 manage.py runserver
@@ -69,6 +74,8 @@ In VSCode one can load the plugin to investigate the database: https://github.co
 * `practicity/settings.py` contains all configurations for the Django project
 * `practicity/urls.py` contains all the urls that are set up by the Django server
 * `practicity/progressTracker` contains the App for the websever in which musicians can track their practice progress. The heart of the functionality.
+
+
 
 <hr>
 <p align="center">

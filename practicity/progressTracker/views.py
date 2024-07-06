@@ -17,7 +17,7 @@ from .forms import ExecutionForm
 
 def index(request):
     """
-    View: indexs
+    View: index
     This view displays the index page of the progressTracker; "/progressTracker/".
     The display shows the latest execution list and the stored exercises.
 
