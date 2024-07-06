@@ -51,16 +51,18 @@
 </head>
 <body>
 
-<div class="form-popup" id="executionForm">
-  <form action="{% url 'progressTracker:exercises' %}" class="form-container" method="post">
-    {% csrf_token %}
-    <h1>Execution</h1>
-    {{ form }}
-
-    <button type="submit" class="btn">Done</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
-  </form>
-</div>
+  <div class="form-popup" id="executionForm">
+    <form action="{% url 'progressTracker:index' %}" class="form-container" method="post">
+      {% csrf_token %}
+      <h1>Execution</h1>
+      {{ form }}
+  
+      <button type="submit" class="btn">Done</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+      <button type="button" label="Now" class="btn now" onclick="getTime()" name="timer" id="time"> Now </button>
+  
+    </form>
+  </div>
 <div class="container">
 <h1>Your Exercises</h1>
 {% if exercise_list %}
@@ -87,24 +89,8 @@
 {% endif %}
 </div>
 
-<script>
-function openForm() {
-  document.getElementById("executionForm").style.display = "block";
-  let arg1 = event.target.getAttribute('data-arg1');
-
-  var date = new Date();
-  var currentDate = date.toISOString().slice(0,10);
-  var currentTime = date.getHours() + ':' + date.getMinutes();
-
-  // pre-fill form:
-  document.getElementById("id_exercise").value = arg1;
-  document.getElementById("id_start").value = currentDate + " " + currentTime;
-}
-
-function closeForm() {
-  document.getElementById("executionForm").style.display = "none";
-}
-</script>
+<!-- Load the Pop-Up javascript functions from javascript file -->
+<script src="{% static 'progressTracker/exercise_form_popup.js' %}"></script>
 
 </body>
 </html>

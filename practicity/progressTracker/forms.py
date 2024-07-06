@@ -27,3 +27,4 @@ class ExecutionForm(forms.Form):
     rating = forms.ChoiceField(choices=RATING_CHOICES)
     tempo = forms.CharField(label="Tempo", max_length=100)
     timer = forms.CharField(label="Timer", disabled=True, required=False)
+    # TODO: add button to the form
