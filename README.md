@@ -1,4 +1,9 @@
-# practicity
+<div style="text-align:center;">
+<img src="./docu/practicity_logo.PNG" alt="logo image" style="width:30%;height:30%;">
+</div>
+<hr>
+
+# Practicity
 A Django server to track your practice progress (made for musicians) using a sqlite3 database.
 
 ## Prerequisites
@@ -64,3 +69,8 @@ In VSCode one can load the plugin to investigate the database: https://github.co
 * `practicity/settings.py` contains all configurations for the Django project
 * `practicity/urls.py` contains all the urls that are set up by the Django server
 * `practicity/progressTracker` contains the App for the websever in which musicians can track their practice progress. The heart of the functionality.
+
+<hr>
+<div style="text-align:center;">
+<img src="./docu/practicity_logo.PNG" alt="logo image" style="width:30%;height:30%;">
+</div>
