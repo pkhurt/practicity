@@ -31,7 +31,7 @@ def index(request):
 
     latest_execution_list = Execution.objects.filter(
         execution_start__lte=timezone.now()).order_by('-execution_start')[:5]
-    execution_list = Execution.objects.all()
+    execution_list = Execution.objects.all().order_by('execution_start')
     exercise_list = Exercise.objects.all()
 
     # The total summed up time of execution
@@ -168,7 +168,7 @@ def statistics_view(request):
     :return:
     """
     exercises_list = Exercise.objects.all()
-    executions_list = Execution.objects.all()
+    executions_list = Execution.objects.all().order_by('execution_start')
     instrument_list = Instrument.objects.all()
     category_list = Category.objects.all()
     exercise_category_list = ExerciseCategory.objects.all()
@@ -214,7 +214,7 @@ def statistics_view(request):
     for exercise in exercises_list:
         x_plot_data = []
         y_plot_data = []
-        this_executions = Execution.objects.filter(exercise=exercise)
+        this_executions = Execution.objects.filter(exercise=exercise).order_by('execution_start')
 
         for execution in this_executions:
             x_plot_data.append(str(execution.execution_start))
